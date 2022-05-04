@@ -1,3 +1,9 @@
 body{
     height: 100vh;
 }
+
+.letter{
+    width: 70px;
+    height: 70px;
+    font-size: 35px;
+}

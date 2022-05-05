@@ -17,19 +17,38 @@ let diceList = {
     dice15: "HLNNRZ"
 };
 
-let boardOrder = {};
-let finalBoard = [];
+let boardOrder = {}; //object that stores randomize dice location
+let finalBoard = []; //array for final board letters
+let dictionary = []; //array to store dictionary
 
-boardGenerator(); //calls board upon load of html to generate boggle board
+
+//reads the text file
+fetch('dict.txt')
+.then(response => response.text()) 
+.then(textString => {
+    //Split the string into rows
+    const rows = textString.split('\r\n');
+    
+    //loops through rows and stores the individual words into the dictionary array
+    for (let i = 0; i < rows.length; i++) {
+        dictionary[i] = rows[i];
+    }
+});
+
+
+
+
+
+
+//calls board upon load of html to generate boggle board
+boardGenerator();
 
 //executes board generation
 function boardGenerator(){
     //calls shuffle functions
     boardOrder = shuffleDices(diceList);
-    console.log(boardOrder);
     finalBoard = shuffleDie(boardOrder);
-    console.log(finalBoard);
-    //makes sure 
+
     //output letters to html
     document.getElementById("boggleBoard").innerHTML = `
         <div class="row" id="row0">
@@ -144,4 +163,16 @@ function shuffleDie(list){
         }
     }
     return array;
+}
+
+//dom that executes when user clicks on the reset button
+document.getElementById("reset").onclick = function(){reset()};
+
+//resets the game
+function reset(){
+    boardOrder = {};
+    finalBoard = [];
+
+    //regenerates board
+    boardGenerator();
 }

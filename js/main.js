@@ -21,25 +21,6 @@ let boardOrder = {}; //object that stores randomize dice location
 let finalBoard = []; //array for final board letters
 let dictionary = []; //array to store dictionary
 
-
-//reads the text file
-fetch('dict.txt')
-.then(response => response.text()) 
-.then(textString => {
-    //Split the string into rows
-    const rows = textString.split('\r\n');
-    
-    //loops through rows and stores the individual words into the dictionary array
-    for (let i = 0; i < rows.length; i++) {
-        dictionary[i] = rows[i];
-    }
-});
-
-
-
-
-
-
 //calls board upon load of html to generate boggle board
 boardGenerator();
 
@@ -176,3 +157,79 @@ function reset(){
     //regenerates board
     boardGenerator();
 }
+
+//reads the text file
+fetch('dict.txt')
+.then(response => response.text()) 
+.then(textString => {
+    //Split the string into rows
+    const rows = textString.split('\r\n');
+
+    //loops through rows and stores the individual words into the dictionary array
+    for (let i = 0; i < rows.length; i++) {
+        dictionary[i] = rows[i];
+    }
+    //stores the dictionary array to local storage
+    localStorage.setItem("dict",JSON.stringify(dictionary));
+});
+
+//function to check if word is valid
+function validWord(word){
+    word = word.toUpperCase();
+    //pulls the dictionary from local storage
+    dictionary = JSON.parse(localStorage.getItem("dict"));
+    //loops through the dictionary
+    for(let i = 0; i < dictionary.length; i++){
+        //checks to see if word is in dictionary
+        if(word == dictionary[i]){
+            return true;
+        }
+    }
+    //if word is not in dictionary returns false
+    return false;
+}
+
+function wordScore(word){
+    let score = 0;
+    //loop through word for individual letter score
+    for(let i = 0; i < word.length; i++){
+        if(word[i] == "A" || word[i] == "E" || word[i] == "I" || word[i] == "O" || word[i] == "U" || word[i] == "L" || word[i] == "N" || word[i] == "S" || word[i] == "T" || word[i] == "R"){
+            score += 1;
+        }
+        else if (word[i] == "D" || word[i] == "G"){
+            score += 2;
+        }
+        else if (word[i] == "B" || word[i] == "C" || word[i] == "M" || word[i] == "P"){
+            score += 3;
+        }
+        else if (word[i] == "F" || word[i] == "H" || word[i] == "V" || word[i] == "W" || word[i] == "Y"){
+            score += 4;
+        }
+        else if (word[i] == "K"){
+            score += 5;
+        }
+        else if (word[i] == "J" || word[i] == "X"){
+            score += 8;
+        }
+        else if (word[i] == "Q" || word[i] == "Z"){
+            score += 10;
+        }
+    }
+    //check for length multiplier score
+    if(word.length == 5){
+        score *= 2;
+    }
+    else if(word.length == 6){
+        score *= 3;
+    }
+    else if(word.length == 7){
+        score *= 4;
+    }
+    else if(word.length >= 8){
+        score *= 5;
+    }
+
+    return score;
+}
+
+console.log(wordScore("QUIZZES"));

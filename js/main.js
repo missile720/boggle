@@ -13,16 +13,19 @@ let diceList = {
     dice11: "EHRTVW",
     dice12: "EIOSST",
     dice13: "ELRTTY",
-    dice14: "HIMNUQu",
+    dice14: "HIMNUQU",
     dice15: "HLNNRZ"
 };
 
 let boardOrder = {}; //object that stores randomize dice location
 let finalBoard = []; //array for final board letters
 let dictionary = []; //array to store dictionary
+let holder = []; //array to hold event target info of each button for no repeats
 
 //calls board upon load of html to generate boggle board
 boardGenerator();
+//calls function that takes in events
+buttonEvent();
 
 //executes board generation
 function boardGenerator(){
@@ -32,60 +35,60 @@ function boardGenerator(){
 
     //output letters to html
     document.getElementById("boggleBoard").innerHTML = `
-        <div class="row" id="row0">
-            <div class="col p-0">
-                <button class="btn btn-outline-dark letter">${finalBoard[0]}</button>
+        <div class="row pb-1" id="row0">
+            <div class="col p-0 pe-1">
+                <button class="btn btn-outline-dark letter" row = "0" col = "0">${finalBoard[0]}</button>
+            </div>
+            <div class="col p-0 pe-1">
+                <button class="btn btn-outline-dark letter" row = "0" col = "1">${finalBoard[1]}</button>
+            </div>
+            <div class="col p-0 pe-1">
+                <button class="btn btn-outline-dark letter" row = "0" col = "2">${finalBoard[2]}</button>
             </div>
             <div class="col p-0">
-                <button class="btn btn-outline-dark letter">${finalBoard[1]}</button>
-            </div>
-            <div class="col p-0">
-                <button class="btn btn-outline-dark letter">${finalBoard[2]}</button>
-            </div>
-            <div class="col p-0">
-                <button class="btn btn-outline-dark letter">${finalBoard[3]}</button>
-            </div>
-        </div>
-        <div class="row" id="row1">
-            <div class="col p-0">
-                <button class="btn btn-outline-dark letter">${finalBoard[4]}</button>
-            </div>
-            <div class="col p-0">
-                <button class="btn btn-outline-dark letter">${finalBoard[5]}</button>
-            </div>
-            <div class="col p-0">
-                <button class="btn btn-outline-dark letter">${finalBoard[6]}</button>
-            </div>
-            <div class="col p-0">
-                <button class="btn btn-outline-dark letter">${finalBoard[7]}</button>
+                <button class="btn btn-outline-dark letter" row = "0" col = "3">${finalBoard[3]}</button>
             </div>
         </div>
-        <div class="row" id="row2">
-            <div class="col p-0">
-                <button class="btn btn-outline-dark letter">${finalBoard[8]}</button>
+        <div class="row pb-1" id="row1">
+            <div class="col p-0 pe-1">
+                <button class="btn btn-outline-dark letter" row = "1" col = "0">${finalBoard[4]}</button>
+            </div>
+            <div class="col p-0 pe-1">
+                <button class="btn btn-outline-dark letter" row = "1" col = "1">${finalBoard[5]}</button>
+            </div>
+            <div class="col p-0 pe-1">
+                <button class="btn btn-outline-dark letter" row = "1" col = "2">${finalBoard[6]}</button>
             </div>
             <div class="col p-0">
-                <button class="btn btn-outline-dark letter">${finalBoard[9]}</button>
+                <button class="btn btn-outline-dark letter" row = "1" col = "3">${finalBoard[7]}</button>
+            </div>
+        </div>
+        <div class="row pb-1" id="row2">
+            <div class="col p-0 pe-1">
+                <button class="btn btn-outline-dark letter" row = "2" col = "0">${finalBoard[8]}</button>
+            </div>
+            <div class="col p-0 pe-1">
+                <button class="btn btn-outline-dark letter" row = "2" col = "1">${finalBoard[9]}</button>
+            </div>
+            <div class="col p-0 pe-1">
+                <button class="btn btn-outline-dark letter" row = "2" col = "2">${finalBoard[10]}</button>
             </div>
             <div class="col p-0">
-                <button class="btn btn-outline-dark letter">${finalBoard[10]}</button>
-            </div>
-            <div class="col p-0">
-                <button class="btn btn-outline-dark letter">${finalBoard[11]}</button>
+                <button class="btn btn-outline-dark letter" row = "2" col = "3">${finalBoard[11]}</button>
             </div>
         </div>
         <div class="row" id="row3">
-            <div class="col p-0">
-                <button class="btn btn-outline-dark letter">${finalBoard[12]}</button>
+            <div class="col p-0 pe-1">
+                <button class="btn btn-outline-dark letter" row = "3" col = "0">${finalBoard[12]}</button>
+            </div>
+            <div class="col p-0 pe-1">
+                <button class="btn btn-outline-dark letter" row = "3" col = "1">${finalBoard[13]}</button>
+            </div>
+            <div class="col p-0 pe-1">
+                <button class="btn btn-outline-dark letter" row = "3" col = "2">${finalBoard[14]}</button>
             </div>
             <div class="col p-0">
-                <button class="btn btn-outline-dark letter">${finalBoard[13]}</button>
-            </div>
-            <div class="col p-0">
-                <button class="btn btn-outline-dark letter">${finalBoard[14]}</button>
-            </div>
-            <div class="col p-0">
-                <button class="btn btn-outline-dark letter">${finalBoard[15]}</button>
+                <button class="btn btn-outline-dark letter" row = "3" col = "3">${finalBoard[15]}</button>
             </div>
         </div>
     `;
@@ -136,7 +139,7 @@ function shuffleDie(list){
         
         //checks for Q and changes it to Qu like in boggle
         if(str[0] == "Q"){
-            array[k] = "Qu";
+            array[k] = "QU";
         }
         else{
             //stores first letter into a new array
@@ -146,16 +149,62 @@ function shuffleDie(list){
     return array;
 }
 
-//dom that executes when user clicks on the reset button
-document.getElementById("reset").onclick = function(){reset()};
+//function for mouse events
+function buttonEvent(){
+    //selects all buttons
+    let buttons = document.querySelectorAll(".letter");
+    //loops through buttons
+    buttons.forEach(button => {
+        button.addEventListener("mousedown", function test1() {mouseDown(button)});
+    });
+    buttons.forEach(button => {
+        button.addEventListener("mouseup", function test2() {mouseUp(button)});
+    });
+}
 
-//resets the game
-function reset(){
-    boardOrder = {};
-    finalBoard = [];
+function mouseDown(event){
+    document.getElementById("wordBank").innerHTML += "mouse down ";
+    if (!holder.includes(event)) {
+        holder.push(event);
+        event.style.backgroundColor = "aqua";
+    }
+    console.log("down");
+    
 
-    //regenerates board
-    boardGenerator();
+    //selects all buttons
+    let buttons = document.querySelectorAll(".letter");
+    //loops through buttons
+    buttons.forEach(button => {
+        button.addEventListener("mouseenter", function test() {mouseDrag(button)}, {once: true});
+    });
+}
+
+function mouseUp(event){
+    //selects all buttons
+    let buttons = document.querySelectorAll(".letter");
+    //loops through buttons
+    buttons.forEach(button => {
+        button.removeEventListener("mouseenter", function test() {mouseDrag(button)}, {once: true});
+    });
+
+    let word = '';
+
+    for (let i = 0; i < holder.length; i++) {
+        holder[i].style.backgroundColor = null;
+        word += holder[i].innerHTML;
+    }
+    document.getElementById("wordBank").innerHTML += "mouse up ";
+
+    //resets holder after every mouse up
+    holder = [];
+}
+
+function mouseDrag(event){
+    document.getElementById("wordBank").innerHTML += "mouse drag ";
+    if (!holder.includes(event)) {
+        holder.push(event);
+        event.style.backgroundColor = "aqua";
+    }
 }
 
 //reads the text file
@@ -175,7 +224,6 @@ fetch('dict.txt')
 
 //function to check if word is valid
 function validWord(word){
-    word = word.toUpperCase();
     //pulls the dictionary from local storage
     dictionary = JSON.parse(localStorage.getItem("dict"));
     //loops through the dictionary
@@ -232,4 +280,16 @@ function wordScore(word){
     return score;
 }
 
-console.log(wordScore("QUIZZES"));
+//dom that executes when user clicks on the reset button
+document.getElementById("reset").onclick = function(){reset()};
+
+//resets the game
+function reset(){
+    boardOrder = {};
+    finalBoard = [];
+    document.getElementById("wordBank").innerHTML = "";
+    //regenerates board
+    boardGenerator();
+    //resume mouse events
+    buttonEvent();
+}

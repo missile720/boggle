@@ -153,57 +153,70 @@ function shuffleDie(list){
 function buttonEvent(){
     //selects all buttons
     let buttons = document.querySelectorAll(".letter");
-    //loops through buttons
+
+    //loops through buttons and adds event listeners for mousedown and mouseup
     buttons.forEach(button => {
-        button.addEventListener("mousedown", function test1() {mouseDown(button)});
+        button.addEventListener("mousedown", function() {mouseDown(button)});
     });
     buttons.forEach(button => {
-        button.addEventListener("mouseup", function test2() {mouseUp(button)});
+        button.addEventListener("mouseup", function() {mouseUp(button)});
     });
+
+    //this works like mouseup but in the case of moving outside the boggle box
+    document.querySelector(".box").addEventListener("mouseleave", function() {mouseUp()});
 }
 
+//function executes when mouse is pressed down
 function mouseDown(event){
-    document.getElementById("wordBank").innerHTML += "mouse down ";
+    //check to see if button is not already in the holder
     if (!holder.includes(event)) {
         holder.push(event);
         event.style.backgroundColor = "aqua";
     }
-    console.log("down");
-    
 
     //selects all buttons
     let buttons = document.querySelectorAll(".letter");
-    //loops through buttons
+    //loops through buttons and adds even listener
     buttons.forEach(button => {
-        button.addEventListener("mouseenter", function test() {mouseDrag(button)}, {once: true});
+        //check to not add the event listener to button that has mousedown event
+        if(event != button){
+            button.addEventListener("mouseenter", mouseDrag, {once: true});
+        }
     });
 }
 
+//executes when mouse is released
 function mouseUp(event){
     //selects all buttons
     let buttons = document.querySelectorAll(".letter");
-    //loops through buttons
+    //loops through buttons and removes event listener
     buttons.forEach(button => {
-        button.removeEventListener("mouseenter", function test() {mouseDrag(button)}, {once: true});
+        button.removeEventListener("mouseenter", mouseDrag, {once: true});
     });
 
     let word = '';
 
+    //loops through holder and grabs the letters inside each button and stores it into word
     for (let i = 0; i < holder.length; i++) {
         holder[i].style.backgroundColor = null;
         word += holder[i].innerHTML;
     }
-    document.getElementById("wordBank").innerHTML += "mouse up ";
+
+    //check to see if word is at minimum three letters long
+    if(word.length > 2){
+        document.getElementById("wordBank").innerHTML += word + " ";
+    }
 
     //resets holder after every mouse up
     holder = [];
 }
 
+//function executed when mouse enters new button
 function mouseDrag(event){
-    document.getElementById("wordBank").innerHTML += "mouse drag ";
-    if (!holder.includes(event)) {
-        holder.push(event);
-        event.style.backgroundColor = "aqua";
+    //event.target refers to the event listener that was invoke
+    if (!holder.includes(event.target)) {
+        holder.push(event.target);
+        event.target.style.backgroundColor = "aqua";
     }
 }
 

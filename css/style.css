@@ -7,3 +7,13 @@ body{
     height: 70px;
     font-size: 35px;
 }
+
+.box{
+    width: 292px;
+ 
+}
+
+#row0,#row1,#row2,#row3{
+    width: 292px;
+    margin: 0%;
+}

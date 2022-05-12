@@ -21,6 +21,8 @@ let boardOrder = {}; //object that stores randomize dice location
 let finalBoard = []; //array for final board letters
 let dictionary = []; //array to store dictionary
 let holder = []; //array to hold event target info of each button for no repeats
+let wordBank = [];//holds all valid words
+let scoreTotal = 0;
 
 //calls board upon load of html to generate boggle board
 boardGenerator();
@@ -202,9 +204,32 @@ function mouseUp(event){
         word += holder[i].innerHTML;
     }
 
+    let check;
+
     //check to see if word is at minimum three letters long
     if(word.length > 2){
-        document.getElementById("wordBank").innerHTML += word + " ";
+        //sends word to function that checks word and returns boolean
+        check = validWord(word);
+
+        //runs when word is in dictionary
+        if(check == true){
+            //check to see if word is not already used
+            if (!wordBank.includes(word)) {
+                //adds word to array
+                wordBank.push(word);
+                
+                document.getElementById("wordBank").innerHTML = "";
+                //loops through array
+                for(let i = 0; i < wordBank.length; i++){
+                    document.getElementById("wordBank").innerHTML += wordBank[i] + " ";
+                }
+
+                //adds score to total
+                scoreTotal += wordScore(word);
+                //display scores
+                document.getElementById("score").innerHTML = scoreTotal;
+            }
+        }
     }
 
     //resets holder after every mouse up
@@ -300,6 +325,9 @@ document.getElementById("reset").onclick = function(){reset()};
 function reset(){
     boardOrder = {};
     finalBoard = [];
+    wordBank = [];
+    scoreTotal = 0;
+    document.getElementById("score").innerHTML = "";
     document.getElementById("wordBank").innerHTML = "";
     //regenerates board
     boardGenerator();

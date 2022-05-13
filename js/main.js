@@ -318,6 +318,41 @@ function wordScore(word){
     return score;
 }
 
+//timer interval for every second runs function
+setInterval(myTimer, 1000);
+
+//set initial time
+let minutes = 3;
+let seconds = 0;
+
+$("#myModal").show();
+
+
+//function that updates timer
+function myTimer() {
+  
+    //conditions for updating timer
+    if(seconds == 0) {
+        document.getElementById("time").innerHTML = minutes + ":" + seconds + seconds;
+        seconds = 59;
+        minutes -= 1;
+    }
+    else if(minutes >= 0 && seconds < 10){
+        document.getElementById("time").innerHTML = minutes + ":0" + seconds;
+        seconds -= 1;
+    }
+    else if(minutes >= 0 && seconds > 0){
+        document.getElementById("time").innerHTML = minutes + ":" + seconds;
+        seconds -= 1;
+    }
+    else if(minutes == 0 && seconds == 0){
+        $("#myModal").modal();
+        let finalScore = document.getElementById("score").innerHTML;
+        document.getElementById("finalScore").innerHTML = finalScore;
+    }
+}
+
+
 //dom that executes when user clicks on the reset button
 document.getElementById("reset").onclick = function(){reset()};
 
@@ -327,6 +362,9 @@ function reset(){
     finalBoard = [];
     wordBank = [];
     scoreTotal = 0;
+    minutes = 3;
+    seconds = 0;
+    document.getElementById("time").innerHTML = minutes + ":" + seconds + seconds;
     document.getElementById("score").innerHTML = "";
     document.getElementById("wordBank").innerHTML = "";
     //regenerates board

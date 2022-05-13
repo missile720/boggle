@@ -23,6 +23,10 @@ let dictionary = []; //array to store dictionary
 let holder = []; //array to hold event target info of each button for no repeats
 let wordBank = [];//holds all valid words
 let scoreTotal = 0;
+let myInterval;
+
+//sets default score
+document.getElementById("score").innerHTML = "0";
 
 //calls board upon load of html to generate boggle board
 boardGenerator();
@@ -153,6 +157,8 @@ function shuffleDie(list){
 
 //function for mouse events
 function buttonEvent(){
+    //timer interval for every second runs function
+    myInterval = setInterval(myTimer, 1000);
     //selects all buttons
     let buttons = document.querySelectorAll(".letter");
 
@@ -275,6 +281,7 @@ function validWord(word){
     return false;
 }
 
+//function to determine score for word
 function wordScore(word){
     let score = 0;
     //loop through word for individual letter score
@@ -318,43 +325,45 @@ function wordScore(word){
     return score;
 }
 
-//timer interval for every second runs function
-setInterval(myTimer, 1000);
+//creates connection from js to html modal
+var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {backdrop: "static"})
 
 //set initial time
 let minutes = 3;
 let seconds = 0;
-
-$("#myModal").show();
-
-
+document.getElementById("time").innerHTML = minutes + ":" + seconds + seconds;
 //function that updates timer
 function myTimer() {
   
     //conditions for updating timer
-    if(seconds == 0) {
+    if(seconds == 0 && minutes > 0) {
         document.getElementById("time").innerHTML = minutes + ":" + seconds + seconds;
         seconds = 59;
         minutes -= 1;
     }
-    else if(minutes >= 0 && seconds < 10){
-        document.getElementById("time").innerHTML = minutes + ":0" + seconds;
-        seconds -= 1;
-    }
-    else if(minutes >= 0 && seconds > 0){
+    else if(minutes >= 0 && seconds > 9){
         document.getElementById("time").innerHTML = minutes + ":" + seconds;
         seconds -= 1;
     }
+    else if(minutes >= 0 && seconds < 10 && seconds > 0){
+        document.getElementById("time").innerHTML = minutes + ":0" + seconds;
+        seconds -= 1;
+    }
     else if(minutes == 0 && seconds == 0){
-        $("#myModal").modal();
+        document.getElementById("time").innerHTML = minutes + ":0" + seconds;
+        console.log("test")
+        myModal.toggle();
         let finalScore = document.getElementById("score").innerHTML;
         document.getElementById("finalScore").innerHTML = finalScore;
+        clearInterval(myInterval);
     }
 }
 
 
 //dom that executes when user clicks on the reset button
 document.getElementById("reset").onclick = function(){reset()};
+document.getElementById("reset1").onclick = function(){reset()};
+document.getElementById("reset2").onclick = function(){reset()};
 
 //resets the game
 function reset(){
@@ -365,10 +374,13 @@ function reset(){
     minutes = 3;
     seconds = 0;
     document.getElementById("time").innerHTML = minutes + ":" + seconds + seconds;
-    document.getElementById("score").innerHTML = "";
+    document.getElementById("score").innerHTML = "0";
     document.getElementById("wordBank").innerHTML = "";
+    //clears interval
+    clearInterval(myInterval);
     //regenerates board
     boardGenerator();
     //resume mouse events
     buttonEvent();
+    
 }

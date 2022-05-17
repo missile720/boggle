@@ -43,58 +43,58 @@ function boardGenerator(){
     //output letters to html
     document.getElementById("boggleBoard").innerHTML = `
         <div class="row pb-1" id="row0">
-            <div class="col p-0 pe-1">
+            <div class="col p-0 pe-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "0" col = "0">${finalBoard[0]}</button>
             </div>
-            <div class="col p-0 pe-1">
+            <div class="col p-0 pe-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "0" col = "1">${finalBoard[1]}</button>
             </div>
-            <div class="col p-0 pe-1">
+            <div class="col p-0 pe-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "0" col = "2">${finalBoard[2]}</button>
             </div>
-            <div class="col p-0">
+            <div class="col p-0 rotatel">
                 <button class="btn btn-outline-dark letter" row = "0" col = "3">${finalBoard[3]}</button>
             </div>
         </div>
         <div class="row pb-1" id="row1">
-            <div class="col p-0 pe-1">
+            <div class="col p-0 pe-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "1" col = "0">${finalBoard[4]}</button>
             </div>
-            <div class="col p-0 pe-1">
+            <div class="col p-0 pe-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "1" col = "1">${finalBoard[5]}</button>
             </div>
-            <div class="col p-0 pe-1">
+            <div class="col p-0 pe-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "1" col = "2">${finalBoard[6]}</button>
             </div>
-            <div class="col p-0">
+            <div class="col p-0 rotatel">
                 <button class="btn btn-outline-dark letter" row = "1" col = "3">${finalBoard[7]}</button>
             </div>
         </div>
         <div class="row pb-1" id="row2">
-            <div class="col p-0 pe-1">
+            <div class="col p-0 pe-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "2" col = "0">${finalBoard[8]}</button>
             </div>
-            <div class="col p-0 pe-1">
+            <div class="col p-0 pe-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "2" col = "1">${finalBoard[9]}</button>
             </div>
-            <div class="col p-0 pe-1">
+            <div class="col p-0 pe-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "2" col = "2">${finalBoard[10]}</button>
             </div>
-            <div class="col p-0">
+            <div class="col p-0 rotatel">
                 <button class="btn btn-outline-dark letter" row = "2" col = "3">${finalBoard[11]}</button>
             </div>
         </div>
         <div class="row" id="row3">
-            <div class="col p-0 pe-1">
+            <div class="col p-0 pe-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "3" col = "0">${finalBoard[12]}</button>
             </div>
-            <div class="col p-0 pe-1">
+            <div class="col p-0 pe-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "3" col = "1">${finalBoard[13]}</button>
             </div>
-            <div class="col p-0 pe-1">
+            <div class="col p-0 pe-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "3" col = "2">${finalBoard[14]}</button>
             </div>
-            <div class="col p-0">
+            <div class="col p-0 rotatel">
                 <button class="btn btn-outline-dark letter" row = "3" col = "3">${finalBoard[15]}</button>
             </div>
         </div>
@@ -333,6 +333,7 @@ var myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {back
 let minutes = 3;
 let seconds = 0;
 document.getElementById("time").innerHTML = minutes + ":" + seconds + seconds;
+
 //function that updates timer
 function myTimer() {
   
@@ -368,15 +369,13 @@ function rotateBoggle(){
     //increment degrees
     currentRotation += 90;
 
-    //adds class
+    //adds class to boggle board
     document.getElementById("boggleBoard").classList.add('rotatesBoggle');
-
+    //rotates boggle board
     document.querySelector("#boggleBoard").style.transform = 'rotate(' + currentRotation + 'deg)';
 
-    
-
     //selects all letters
-    let letters = document.querySelectorAll(".letter");
+    let letters = document.querySelectorAll(".rotatel");
 
     //adds rotates class
     for(let i = 0; i < letters.length; i++){
@@ -389,16 +388,6 @@ function rotateBoggle(){
     for(let i = 0; i < letterRotate.length; i++){
         letterRotate[i].style.transform = 'rotate(-' + currentRotation + 'deg)';
     }
-
-    // //selects all with rotates class
-    // letterRotate = document.querySelectorAll(".rotates");
-
-    // for(let i = 0; i < letterRotate.length; i++){
-    //     letterRotate[i].classList.remove('rotates');
-    // }
-
-    // document.getElementById("boggleBoard").classList.remove('rotatesBoggle');
-
 }
 
 
@@ -416,7 +405,7 @@ function reset(){
     minutes = 3;
     seconds = 0;
 
-    //resets rotation
+    //resets rotation and removes transform
     currentRotation = 0;
     document.getElementById("boggleBoard").classList.remove('rotatesBoggle');
     document.querySelector("#boggleBoard").style.transform = "none";
@@ -424,13 +413,13 @@ function reset(){
     //selects all letters
     let letters = document.querySelectorAll(".letter");
 
-    //adds rotates class
+    //removes rotates class
     for(let i = 0; i < letters.length; i++){
         letters[i].classList.remove('rotates');
         letters[i].style.transform = "none";
     }
 
-
+    //resets html
     document.getElementById("time").innerHTML = minutes + ":" + seconds + seconds;
     document.getElementById("score").innerHTML = "0";
     document.getElementById("wordBank").innerHTML = "";
@@ -440,5 +429,4 @@ function reset(){
     boardGenerator();
     //resume mouse events
     buttonEvent();
-    
 }

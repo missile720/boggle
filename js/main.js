@@ -24,6 +24,7 @@ let holder = []; //array to hold event target info of each button for no repeats
 let wordBank = [];//holds all valid words
 let scoreTotal = 0;
 let myInterval;
+let currentRotation = 0; //initialize variable for degrees
 
 //sets default score
 document.getElementById("score").innerHTML = "0";
@@ -359,6 +360,47 @@ function myTimer() {
     }
 }
 
+//dom that executes when user clicks on rotate button
+document.getElementById("rotate").onclick = function(){rotateBoggle()};
+
+//function that rotates boggle board
+function rotateBoggle(){
+    //increment degrees
+    currentRotation += 90;
+
+    //adds class
+    document.getElementById("boggleBoard").classList.add('rotatesBoggle');
+
+    document.querySelector("#boggleBoard").style.transform = 'rotate(' + currentRotation + 'deg)';
+
+    
+
+    //selects all letters
+    let letters = document.querySelectorAll(".letter");
+
+    //adds rotates class
+    for(let i = 0; i < letters.length; i++){
+        letters[i].classList.add('rotates');
+    }
+
+    //selects all with rotates class
+    let letterRotate = document.querySelectorAll(".rotates");
+
+    for(let i = 0; i < letterRotate.length; i++){
+        letterRotate[i].style.transform = 'rotate(-' + currentRotation + 'deg)';
+    }
+
+    // //selects all with rotates class
+    // letterRotate = document.querySelectorAll(".rotates");
+
+    // for(let i = 0; i < letterRotate.length; i++){
+    //     letterRotate[i].classList.remove('rotates');
+    // }
+
+    // document.getElementById("boggleBoard").classList.remove('rotatesBoggle');
+
+}
+
 
 //dom that executes when user clicks on the reset button
 document.getElementById("reset").onclick = function(){reset()};
@@ -373,6 +415,22 @@ function reset(){
     scoreTotal = 0;
     minutes = 3;
     seconds = 0;
+
+    //resets rotation
+    currentRotation = 0;
+    document.getElementById("boggleBoard").classList.remove('rotatesBoggle');
+    document.querySelector("#boggleBoard").style.transform = "none";
+
+    //selects all letters
+    let letters = document.querySelectorAll(".letter");
+
+    //adds rotates class
+    for(let i = 0; i < letters.length; i++){
+        letters[i].classList.remove('rotates');
+        letters[i].style.transform = "none";
+    }
+
+
     document.getElementById("time").innerHTML = minutes + ":" + seconds + seconds;
     document.getElementById("score").innerHTML = "0";
     document.getElementById("wordBank").innerHTML = "";

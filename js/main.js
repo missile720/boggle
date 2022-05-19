@@ -42,59 +42,59 @@ function boardGenerator(){
 
     //output letters to html
     document.getElementById("boggleBoard").innerHTML = `
-        <div class="row pb-1" id="row0">
-            <div class="col p-0 pe-1 rotatel">
+        <div class="row" id="row0">
+            <div class="col p-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "0" col = "0">${finalBoard[0]}</button>
             </div>
-            <div class="col p-0 pe-1 rotatel">
+            <div class="col p-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "0" col = "1">${finalBoard[1]}</button>
             </div>
-            <div class="col p-0 pe-1 rotatel">
+            <div class="col p-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "0" col = "2">${finalBoard[2]}</button>
             </div>
-            <div class="col p-0 rotatel">
+            <div class="col p-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "0" col = "3">${finalBoard[3]}</button>
             </div>
         </div>
-        <div class="row pb-1" id="row1">
-            <div class="col p-0 pe-1 rotatel">
+        <div class="row" id="row1">
+            <div class="col p-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "1" col = "0">${finalBoard[4]}</button>
             </div>
-            <div class="col p-0 pe-1 rotatel">
+            <div class="col p-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "1" col = "1">${finalBoard[5]}</button>
             </div>
-            <div class="col p-0 pe-1 rotatel">
+            <div class="col p-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "1" col = "2">${finalBoard[6]}</button>
             </div>
-            <div class="col p-0 rotatel">
+            <div class="col p-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "1" col = "3">${finalBoard[7]}</button>
             </div>
         </div>
-        <div class="row pb-1" id="row2">
-            <div class="col p-0 pe-1 rotatel">
+        <div class="row" id="row2">
+            <div class="col p-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "2" col = "0">${finalBoard[8]}</button>
             </div>
-            <div class="col p-0 pe-1 rotatel">
+            <div class="col p-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "2" col = "1">${finalBoard[9]}</button>
             </div>
-            <div class="col p-0 pe-1 rotatel">
+            <div class="col p-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "2" col = "2">${finalBoard[10]}</button>
             </div>
-            <div class="col p-0 rotatel">
+            <div class="col p-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "2" col = "3">${finalBoard[11]}</button>
             </div>
         </div>
         <div class="row" id="row3">
-            <div class="col p-0 pe-1 rotatel">
+            <div class="col p-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "3" col = "0">${finalBoard[12]}</button>
             </div>
-            <div class="col p-0 pe-1 rotatel">
+            <div class="col p-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "3" col = "1">${finalBoard[13]}</button>
             </div>
-            <div class="col p-0 pe-1 rotatel">
+            <div class="col p-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "3" col = "2">${finalBoard[14]}</button>
             </div>
-            <div class="col p-0 rotatel">
+            <div class="col p-1 rotatel">
                 <button class="btn btn-outline-dark letter" row = "3" col = "3">${finalBoard[15]}</button>
             </div>
         </div>
@@ -173,6 +173,8 @@ function buttonEvent(){
 
     //this works like mouseup but in the case of moving outside the boggle box
     document.querySelector(".box").addEventListener("mouseleave", function() {mouseUp()});
+    //for the case where user lets go of mouse when in the box but not on a button
+    document.querySelector(".box").addEventListener("mouseup", function() {mouseUp()});
 }
 
 //function executes when mouse is pressed down
@@ -180,7 +182,7 @@ function mouseDown(event){
     //check to see if button is not already in the holder
     if (!holder.includes(event)) {
         holder.push(event);
-        event.style.backgroundColor = "aqua";
+        event.style.background = "linear-gradient(164deg, rgba(46,80,187,1) 0%, rgba(21,208,196,0.8435749299719888) 46%, rgba(0,206,255,0.6446953781512605) 100%)";
     }
 
     //selects all buttons
@@ -207,7 +209,7 @@ function mouseUp(event){
 
     //loops through holder and grabs the letters inside each button and stores it into word
     for (let i = 0; i < holder.length; i++) {
-        holder[i].style.backgroundColor = null;
+        holder[i].style.background = null;
         word += holder[i].innerHTML;
     }
 
@@ -245,10 +247,23 @@ function mouseUp(event){
 
 //function executed when mouse enters new button
 function mouseDrag(event){
-    //event.target refers to the event listener that was invoke
-    if (!holder.includes(event.target)) {
-        holder.push(event.target);
-        event.target.style.backgroundColor = "aqua";
+    //variable that stores position of last button drag/pushed
+    let lastRow = holder[holder.length-1].getAttribute("row");
+    let lastCol = holder[holder.length-1].getAttribute("col");
+
+    //variable that stores current position
+    let currentRow = event.target.getAttribute("row");
+    let currentCol = event.target.getAttribute("col");
+
+    //checks last button with new button position
+    if(Math.abs(lastRow - currentRow) <= 1){
+        if(Math.abs(lastCol - currentCol) <= 1){
+            //event.target refers to the event listener that was invoke
+            if (!holder.includes(event.target)) {
+                holder.push(event.target);
+                event.target.style.background = "linear-gradient(164deg, rgba(46,80,187,1) 0%, rgba(21,208,196,0.8435749299719888) 46%, rgba(0,206,255,0.6446953781512605) 100%)";
+            }
+        }
     }
 }
 

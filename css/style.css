@@ -1,5 +1,19 @@
 body{
     height: 100vh;
+    background-color: #E3DBDB;
+}
+
+.header{
+    font-size: 80px;
+    font-family: 'Smooch', cursive;
+}
+
+.btn{
+    background-color: #e9c4e9;
+}
+
+#rotate,#reset{
+    background-color: rgb(105, 185, 255);
 }
 
 .letter{
@@ -9,12 +23,12 @@ body{
 }
 
 .box{
-    width: 292px;
- 
+    width: 312px;
+    background-color:aliceblue;
 }
 
 #row0,#row1,#row2,#row3{
-    width: 292px;
+    width: 312px;
     margin: 0%;
 }
 

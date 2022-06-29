@@ -1,9 +1,41 @@
 body{
     height: 100vh;
+    background-color: #E3DBDB;
+}
+
+.header{
+    font-size: 80px;
+    font-family: 'Smooch', cursive;
+}
+
+.btn{
+    background-color: #e9c4e9;
+}
+
+#rotate,#reset{
+    background-color: rgb(105, 185, 255);
 }
 
 .letter{
     width: 70px;
     height: 70px;
     font-size: 35px;
+}
+
+.box{
+    width: 312px;
+    background-color:aliceblue;
+}
+
+#row0,#row1,#row2,#row3{
+    width: 312px;
+    margin: 0%;
+}
+
+.rotates, .rotatesBoggle{
+    -webkit-transition: 3s;
+    -moz-transition: 3s;
+    -ms-transition: 3s;
+    -o-transition: 3s;
+    transition: 3s;
 }

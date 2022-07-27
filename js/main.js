@@ -268,7 +268,7 @@ function mouseDrag(event){
 }
 
 //reads the text file
-fetch('dict.txt')
+fetch('../files/dict.txt')
 .then(response => response.text()) 
 .then(textString => {
     //Split the string into rows

@@ -287,10 +287,11 @@ function validWord(word){
     //pulls the dictionary from local storage
     dictionary = JSON.parse(localStorage.getItem("dict"));
     //loops through the dictionary
+    console.log(dictionary);
     for(let i = 0; i < dictionary.length; i++){
         //checks to see if word is in dictionary
+        console.log("test");
         if(word == dictionary[i]){
-            console.log("test");
             return true;
         }
     }

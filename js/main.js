@@ -212,7 +212,6 @@ function mouseUp(event){
         holder[i].style.background = null;
         word += holder[i].innerHTML;
     }
-    console.log(word);
     let check;
 
     //check to see if word is at minimum three letters long
@@ -284,7 +283,6 @@ fetch('../files/dict.txt')
 
 //function to check if word is valid
 function validWord(word){
-    console.log("test");
     //pulls the dictionary from local storage
     dictionary = JSON.parse(localStorage.getItem("dict"));
     //loops through the dictionary

@@ -290,6 +290,7 @@ function validWord(word){
     for(let i = 0; i < dictionary.length; i++){
         //checks to see if word is in dictionary
         if(word == dictionary[i]){
+            console.log("test");
             return true;
         }
     }

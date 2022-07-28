@@ -212,7 +212,7 @@ function mouseUp(event){
         holder[i].style.background = null;
         word += holder[i].innerHTML;
     }
-
+    console.log(word);
     let check;
 
     //check to see if word is at minimum three letters long
@@ -284,13 +284,12 @@ fetch('../files/dict.txt')
 
 //function to check if word is valid
 function validWord(word){
+    console.log("test");
     //pulls the dictionary from local storage
     dictionary = JSON.parse(localStorage.getItem("dict"));
     //loops through the dictionary
-    console.log(dictionary);
     for(let i = 0; i < dictionary.length; i++){
         //checks to see if word is in dictionary
-        console.log("test");
         if(word == dictionary[i]){
             return true;
         }
@@ -370,7 +369,6 @@ function myTimer() {
     }
     else if(minutes == 0 && seconds == 0){
         document.getElementById("time").innerHTML = minutes + ":0" + seconds;
-        console.log("test")
         myModal.toggle();
         let finalScore = document.getElementById("score").innerHTML;
         document.getElementById("finalScore").innerHTML = finalScore;

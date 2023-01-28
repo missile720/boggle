@@ -19,7 +19,6 @@ let diceList = {
 
 let boardOrder = {}; //object that stores randomize dice location
 let finalBoard = []; //array for final board letters
-let dictionary = []; //array to store dictionary
 let holder = []; //array to hold event target info of each button for no repeats
 let wordBank = [];//holds all valid words
 let scoreTotal = 0;
@@ -266,25 +265,8 @@ function mouseDrag(event){
     }
 }
 
-//reads the text file
-fetch('../files/dict.txt')
-.then(response => response.text()) 
-.then(textString => {
-    //Split the string into rows
-    const rows = textString.split('\r\n');
-
-    //loops through rows and stores the individual words into the dictionary array
-    for (let i = 0; i < rows.length; i++) {
-        dictionary[i] = rows[i];
-    }
-    //stores the dictionary array to local storage
-    localStorage.setItem("dict",JSON.stringify(dictionary));
-});
-
 //function to check if word is valid
 function validWord(word){
-    //pulls the dictionary from local storage
-    dictionary = JSON.parse(localStorage.getItem("dict"));
     //loops through the dictionary
     for(let i = 0; i < dictionary.length; i++){
         //checks to see if word is in dictionary
